@@ -6,11 +6,12 @@ let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 
 // Personal API Key for OpenWeatherMap API
 let baseURL = 'https://api.openweathermap.org/data/2.5/weather?zip=';
-let apiKey = '&appid=50f69e6fe9af3042632d6f772387fa23&units=metric';
+let apiKey = '&appid=*********af3042632d6f772387fa23&units=metric';
 const newCityZip = document.getElementById("zip").value;
 
 /* Function to GET Web API Data*/
 const getWeatherDemo = async (baseURL, cityZip, apiKey)=>{
+    //cityZip = document.getElementById("zip").value;
     const res = await fetch(baseURL+cityZip+",de"+apiKey);
 
     try {
@@ -28,12 +29,12 @@ document.getElementById("generate").addEventListener("click", performAction);
 
 /* Function called by event listener */
 function performAction(e){
-    const cityZip = document.getElementById("zip").value;
+    const newCityZip = document.getElementById("zip").value;
     const feelings = document.getElementById("feelings").value;
 
-    getWeatherDemo(baseURL, cityZip, apiKey)
+    getWeatherDemo(baseURL, newCityZip, apiKey)
         .then(function(userData) {
-            postData('/add', {temp:userData['main']['temp'], date: newDate, userText: feelings})
+            postData('/add', {temp:userData['temp'], date: newDate, userText: feelings})
         })
 
     //updating the UI to contain the date, the temperature of the city with the API, the user response
@@ -68,17 +69,17 @@ const postData = async (url = "", data = {}) =>{
 
 /* Function to GET Project Data */
 const updateUI = async () =>{
-    const request = await fetch('/all');
+    const request = await fetch('/');
     try {
         // Transform into JSON
         const allData = await request.json()
         console.log(allData)
         // Write updated data to DOM elements
-        document.getElementById('temp').innerHTML = Math.round(allData.temp)+ 'degrees';
+        document.getElementById('temp').innerHTML = allData.temp;
         document.getElementById('content').innerHTML = allData.userText;
         document.getElementById("date").innerHTML =allData.date;
     }
     catch(error) {
-        console.log("error", error);
+        console.log('error', error);
     }
 }
