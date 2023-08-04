@@ -13,7 +13,7 @@ const bodyParser= require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Cors for cross origin allowance
+// Cors for cross-origin allowance
 const cors = require('cors');
 app.use(cors());
 
@@ -22,20 +22,20 @@ app.use(express.static('website'));
 
 
 // Setup Server
-const port = 3000;
+const port = 8000;
 const server = app.listen(port, listening);
 
 function listening() {
     console.log('server running');
-    console.log('running on localhost: {$port}');
+    console.log(`running on localhost: ${port}`);
 }
 
 // GET ROUTE
-app.get("/", sendData);
+app.get("/all", sendData);
 
 function sendData(request, response) {
     response.send(projectData);
-};
+}
 
 // POST Route
 app.post("/add", addData);
@@ -45,13 +45,6 @@ function addData(request, response) {
     projectData['date'] = request.body.date;
     projectData['userText'] = request.body.userText;
     console.log(projectData);
-    response.send(projectData);
-};
-
-//sending the data to facilitate displaying it the UI
-app.get('/all', getProjectData);
-
-function getProjectData(request, response) {
     response.send(projectData);
 }
 
